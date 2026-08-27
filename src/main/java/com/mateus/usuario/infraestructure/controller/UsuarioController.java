@@ -1,6 +1,7 @@
 package com.mateus.usuario.infraestructure.controller;
 
 import com.mateus.usuario.infraestructure.business.UsuarioService;
+import com.mateus.usuario.infraestructure.business.dto.LoginResponseDTO;
 import com.mateus.usuario.infraestructure.business.dto.UsuarioDTO;
 import com.mateus.usuario.infraestructure.entity.Usuario;
 import com.mateus.usuario.infraestructure.security.JwtUtil;
@@ -25,9 +26,11 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public  String login(@RequestBody UsuarioDTO usuarioDTO){
+    public LoginResponseDTO login(@RequestBody UsuarioDTO usuarioDTO){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usuarioDTO.getEmail(), usuarioDTO.getSenha()));
-        return "Token: Bearer " + jwtUtil.generateToken(authentication.getName());
+        return new LoginResponseDTO(
+                "Bearer " + jwtUtil.generateToken(authentication.getName())
+        );
     }
 
     @GetMapping
@@ -40,6 +43,11 @@ public class UsuarioController {
     public ResponseEntity<Void> deletarUsuarioPorEmail(@PathVariable String email){
         usuarioService.deletarUsuarioPorEmail(email);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<UsuarioDTO>atualizaDadoUsuario(@RequestBody UsuarioDTO usuarioDTO, @RequestHeader("Authorization")String token){
+        return ResponseEntity.ok(usuarioService.atualizaUsuario(token, usuarioDTO));
     }
 
 
