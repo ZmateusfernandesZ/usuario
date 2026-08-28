@@ -1,7 +1,9 @@
 package com.mateus.usuario.infraestructure.controller;
 
 import com.mateus.usuario.infraestructure.business.UsuarioService;
+import com.mateus.usuario.infraestructure.business.dto.EnderecoDTO;
 import com.mateus.usuario.infraestructure.business.dto.LoginResponseDTO;
+import com.mateus.usuario.infraestructure.business.dto.TelefoneDTO;
 import com.mateus.usuario.infraestructure.business.dto.UsuarioDTO;
 import com.mateus.usuario.infraestructure.entity.Usuario;
 import com.mateus.usuario.infraestructure.security.JwtUtil;
@@ -34,7 +36,7 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<Usuario> buscaUsuarioPorEmail(@RequestParam("email") String email){
+    public ResponseEntity<UsuarioDTO> buscaUsuarioPorEmail(@RequestParam("email") String email){
         return ResponseEntity.ok(usuarioService.buscarUsuarioPorEmail(email));
 
     }
@@ -50,5 +52,13 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.atualizaUsuario(token, usuarioDTO));
     }
 
+    @PutMapping("/endereco")
+    public ResponseEntity<EnderecoDTO> atualizaEndereco(@RequestParam("id") Long id, @RequestBody EnderecoDTO enderecoDTO){
+        return ResponseEntity.ok(usuarioService.atualizaEndereco(id, enderecoDTO));
+    }
 
+    @PutMapping("/telefone")
+    public ResponseEntity<TelefoneDTO> atualizaTelefone(@RequestParam("id") Long id, @RequestBody TelefoneDTO telefoneDTO){
+        return ResponseEntity.ok(usuarioService.atualizaTelefone(id, telefoneDTO));
+    }
 }
