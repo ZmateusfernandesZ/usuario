@@ -22,6 +22,7 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
+
     @PostMapping
     public ResponseEntity<UsuarioDTO> salvaUsuario(@RequestBody UsuarioDTO usuarioDTO){
         return ResponseEntity.ok(usuarioService.salvaUsuario(usuarioDTO));
@@ -61,4 +62,15 @@ public class UsuarioController {
     public ResponseEntity<TelefoneDTO> atualizaTelefone(@RequestParam("id") Long id, @RequestBody TelefoneDTO telefoneDTO){
         return ResponseEntity.ok(usuarioService.atualizaTelefone(id, telefoneDTO));
     }
+
+    @PostMapping("/endereco")
+    public ResponseEntity<EnderecoDTO> cadastraEndereco(@RequestBody EnderecoDTO dto, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(usuarioService.cadastraEndereco(token, dto));
+    }
+
+    @PostMapping("/telefone")
+    public ResponseEntity<TelefoneDTO> cadastraTelefone(@RequestBody TelefoneDTO dto, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(usuarioService.cadastraTelefone(token, dto));
+    }
+
 }
